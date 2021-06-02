@@ -14,6 +14,7 @@ def _unpack_data(data):
     return x, y, sample_weight
 
 
+# 参考苏神的实现：https://github.com/bojone/SimCSE/blob/bce7175e9d87f45e6123d77d2080667ffa2915b4/eval.py#L126
 def unsup_simcse_loss(y_true, y_pred, sample_weight=None):
     # construct labels
     idxs = tf.range(0, tf.shape(y_pred)[0])
