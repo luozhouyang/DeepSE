@@ -1,2 +1,3 @@
 tensorflow
+transformers-keras==0.2.6
 transformers
