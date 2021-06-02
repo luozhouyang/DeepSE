@@ -58,9 +58,9 @@ model.fit(
     epochs=EPOCHS,
     callbacks=[
         # 保存ckpt格式的模型
-        tf.keras.callbacks.ModelCheckpoint(filepath=MODEL_DIR + '/ckpt', save_weights_only=False),
+        tf.keras.callbacks.ModelCheckpoint(filepath=MODEL_DIR + '/ckpt', save_weights_only=True),
         # 保存SavedModel格式的模型，用于Serving部署
-        tf.keras.callbacks.ModelCheckpoint(filepath=MODEL_DIR + '/export/{epoch}', save_weights_only=True)
+        tf.keras.callbacks.ModelCheckpoint(filepath=MODEL_DIR + '/export/{epoch}', save_weights_only=False)
         # TODO: 增加性能评估的回调
     ]
 )
