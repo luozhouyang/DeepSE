@@ -2,8 +2,6 @@ import tensorflow as tf
 from transformers import BertConfig, TFBertModel
 from transformers_keras import Bert
 
-from .bert_embedding import BertSentenceEmbedding
-
 
 def _unpack_data(data):
     x, y, sample_weight = None, None, None
@@ -14,11 +12,6 @@ def _unpack_data(data):
     elif len(data) == 1:
         x = data
     return x, y, sample_weight
-
-
-def print_variables(vars):
-    for v in vars:
-        print(v)
 
 
 def unsup_simcse_loss(y_true, y_pred, sample_weight=None):
@@ -90,7 +83,7 @@ class UnsupSimCSE(tf.keras.Model):
         return input_ids, segment_ids, attn_mask
 
 
-def UnsupSimCSEModel(pretrained_model_dir, strategy='cls', **kwargs):
+def UnsupSimCSEModel(pretrained_model_dir, strategy='cls', lr=3e-5, **kwargs):
     input_ids = tf.keras.layers.Input(shape=[None, ], dtype=tf.int32, name='input_ids')
     segment_ids = tf.keras.layers.Input(shape=[None, ], dtype=tf.int32, name='segment_ids')
     attn_mask = tf.keras.layers.Input(shape=[None, ], dtype=tf.int32, name='attention_mask')
@@ -105,8 +98,7 @@ def UnsupSimCSEModel(pretrained_model_dir, strategy='cls', **kwargs):
     embedding = tf.keras.layers.Lambda(lambda x: x[:, 0], name='embedding')(sequence_outputs)
     model = UnsupSimCSE(inputs=[input_ids, segment_ids, attn_mask], outputs=embedding)
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=3e-5),
-        loss=unsup_simcse_loss
+        optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
     )
     model.summary()
     return model
