@@ -8,21 +8,21 @@ from deepse.bert_embedding import (BertAllInOneEmbeddingModel,
                                    BertCLSEmbeddingModel,
                                    BertFirstLastAvgEmbeddingModel,
                                    BertPoolerEmbeddingModel)
-from transformers import BertTokenizer
+from tokenizers import BertWordPieceTokenizer
 
 BERT_PATH = os.path.join(os.environ['PRETRAINED_MODEL_PATH'], 'chinese_roberta_wwm_ext_L-12_H-768_A-12')
-tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
+tokenizer = BertWordPieceTokenizer.from_file(os.path.join(BERT_PATH, 'vocab.txt'))
 
 
 class BertEmbeddingTest(unittest.TestCase):
 
     def _request_embedding(self, url, text):
-        token_ids = tokenizer.encode(text)
+        encoding = tokenizer.encode(text)
         req = {
             'inputs': {
-                'input_ids': [token_ids],
-                'segment_ids': [[0] * len(token_ids)],
-                'attention_mask': [[1] * len(token_ids)]
+                'input_ids': [encoding.ids],
+                'segment_ids': [encoding.type_ids],
+                'attention_mask': [encoding.attention_mask]
             }
         }
         resp = requests.post(url, data=json.dumps(req)).json()

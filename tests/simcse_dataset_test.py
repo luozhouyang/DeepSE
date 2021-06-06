@@ -2,8 +2,7 @@ import os
 import unittest
 
 from deepse.simcse_dataset import UnsupSimCSEDataset
-from transformers import BertTokenizer
-
+from tokenizers import BertWordPieceTokenizer
 
 PATH = os.environ['PRETRAINED_MODEL_PATH']
 
@@ -11,7 +10,8 @@ PATH = os.environ['PRETRAINED_MODEL_PATH']
 class SimCSEDatasetTest(unittest.TestCase):
 
     def test_build_dataset(self):
-        tokenizer = BertTokenizer.from_pretrained(os.path.join(PATH, 'chinese_roberta_wwm_ext_L-12_H-768_A-12'))
+        tokenizer = BertWordPieceTokenizer.from_file(
+            os.path.join(PATH, 'chinese_roberta_wwm_ext_L-12_H-768_A-12', 'vocab.txt'))
         dataset = UnsupSimCSEDataset(tokenizer)
         train_dataset = dataset(
             input_files=['data/small.txt'],

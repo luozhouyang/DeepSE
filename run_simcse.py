@@ -2,7 +2,7 @@ import logging
 import os
 
 import tensorflow as tf
-from transformers import BertTokenizer
+from tokenizers import BertWordPieceTokenizer
 
 from deepse.simcse import UnsupSimCSEModel
 from deepse.simcse_dataset import UnsupSimCSEDataset
@@ -36,7 +36,7 @@ model = UnsupSimCSEModel(
     lr=LEARNINT_RATE,
 )
 
-tokenizer = BertTokenizer.from_pretrained(PRETRAINED_BERT_PATH)
+tokenizer = BertWordPieceTokenizer.from_file(os.path.join(PRETRAINED_BERT_PATH, 'vocab.txt'))
 dataset = UnsupSimCSEDataset(tokenizer=tokenizer)
 train_dataset = dataset(
     input_files=TRAIN_INPUT_FILES,

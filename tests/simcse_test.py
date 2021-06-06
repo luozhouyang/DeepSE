@@ -4,10 +4,9 @@ import unittest
 import tensorflow as tf
 from deepse.simcse import UnsupSimCSE, UnsupSimCSEModel, unsup_simcse_loss
 from deepse.simcse_dataset import UnsupSimCSEDataset
-from transformers import BertTokenizer
+from tokenizers import BertWordPieceTokenizer
 
 PRETRAINED_MODEL_PATH = os.environ['PRETRAINED_MODEL_PATH']
-tf.get_logger().setLevel('INFO')
 
 
 class SimCSETest(unittest.TestCase):
@@ -15,7 +14,7 @@ class SimCSETest(unittest.TestCase):
     def test_unsup_simcse_train(self):
         model_path = os.path.join(PRETRAINED_MODEL_PATH, 'chinese_roberta_wwm_ext_L-12_H-768_A-12')
         model = UnsupSimCSEModel(model_path)
-        tokenizer = BertTokenizer.from_pretrained(model_path)
+        tokenizer = BertWordPieceTokenizer.from_file(os.path.join(model_path, 'vocab.txt'))
         dataset = UnsupSimCSEDataset(tokenizer)
         train_dataset = dataset(
             input_files=['data/small.txt'],

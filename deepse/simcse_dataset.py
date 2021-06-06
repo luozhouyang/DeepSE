@@ -2,12 +2,12 @@ import logging
 import os
 
 import tensorflow as tf
-from transformers import BertTokenizer
+from tokenizers import BertWordPieceTokenizer
 
 
 class UnsupSimCSEDataset:
 
-    def __init__(self, tokenizer: BertTokenizer):
+    def __init__(self, tokenizer: BertWordPieceTokenizer):
         super().__init__()
         self.tokenizer = tokenizer
 
@@ -62,8 +62,8 @@ class UnsupSimCSEDataset:
                 continue
             with open(f, mode='rt', encoding='utf-8') as fin:
                 for line in fin:
-                    token_ids = self.tokenizer.encode(line.strip(), add_special_tokens=True)
-                    input_token_ids.append(token_ids)
-                    segment_ids.append([0] * len(token_ids))
-                    attn_masks.append([1] * len(token_ids))
+                    encoding = self.tokenizer.encode(line.strip())
+                    input_token_ids.append(encoding.ids)
+                    segment_ids.append(encoding.type_ids)
+                    attn_masks.append(encoding.attention_mask)
         return input_token_ids, segment_ids, attn_masks

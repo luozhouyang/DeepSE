@@ -1,19 +1,17 @@
-import requests
-from transformers import BertTokenizer
-import tensorflow as tf
+import json
+import os
 
 import numpy as np
-import os
-import json
+import requests
+import tensorflow as tf
+from tokenizers import BertWordPieceTokenizer
 
 
 class SimCSEClient:
 
-    def __init__(self):
+    def __init__(self, vocab_file):
         super().__init__()
-        self.tokenizer = BertTokenizer.from_pretrained(
-            os.path.join(os.environ['PRETRAINED_MODEL_PATH'], 'chinese_roberta_wwm_ext_L-12_H-768_A-12')
-        )
+        self.tokenizer = BertWordPieceTokenizer.from_file(vocab_file)
 
     def call(self, text):
         input_ids = self.tokenizer.encode(text)
@@ -30,5 +28,6 @@ class SimCSEClient:
 
 
 if __name__ == "__main__":
-    c = SimCSEClient()
+    model_path = os.path.join(os.environ['PRETRAINED_MODEL_PATH'], 'chinese_roberta_wwm_ext_L-12_H-768_A-12')
+    c = SimCSEClient(vocab_file=os.path.join(model_path, 'vocab.txt'))
     c.call('I love NLP')

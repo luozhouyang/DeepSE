@@ -1,5 +1,4 @@
 import tensorflow as tf
-from transformers import BertConfig, TFBertModel
 from transformers_keras import Bert
 
 
