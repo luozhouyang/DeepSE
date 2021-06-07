@@ -1,10 +1,18 @@
 # DeepSE
-Sentence Embeddings using Deep Nerual Networks
+**DeepSE**: **Sentence Embeddings** based on Deep Nerual Networks, designed for **PRODUCTION** enviroment!
 
-## Requirements
+## Installation
+
+Clone git repo:
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/luozhouyang/deepse.git
+```
+
+or install from pypi:
+
+```bash
+pip install -U deepse
 ```
 
 ## SimCSE
