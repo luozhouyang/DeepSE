@@ -3,7 +3,7 @@ from .bert_embedding import (BertAllInOneEmbeddingModel, BertAvgEmbeddingModel,
                              BertFirstLastAvgEmbeddingModel,
                              BertPoolerEmbeddingModel)
 from .simcse_dataset import UnsupSimCSEDataset
-from .simcse_unsup import UnsupSimCSE
+from .simcse_unsup import UnsupSimCSEModel
 
 __name__ = "deepse"
 __version__ = "0.0.1"

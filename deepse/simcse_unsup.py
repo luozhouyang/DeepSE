@@ -30,7 +30,7 @@ def unsup_simcse_loss(y_true, y_pred, sample_weight=None):
     return tf.reduce_mean(loss)
 
 
-class UnsupSimCSE(tf.keras.Model):
+class UnsupSimCSEModel(tf.keras.Model):
 
     def train_step(self, data):
         x, y, sample_weight = _unpack_data(data)
@@ -83,7 +83,7 @@ class UnsupSimCSE(tf.keras.Model):
         return input_ids, segment_ids, attn_mask
 
 
-def UnsupSimCSEModel(pretrained_model_dir, strategy='cls', lr=3e-5, **kwargs):
+def UnsupSimCSE(pretrained_model_dir, strategy='cls', lr=3e-5, **kwargs):
     input_ids = tf.keras.layers.Input(shape=[None, ], dtype=tf.int32, name='input_ids')
     segment_ids = tf.keras.layers.Input(shape=[None, ], dtype=tf.int32, name='segment_ids')
     attn_mask = tf.keras.layers.Input(shape=[None, ], dtype=tf.int32, name='attention_mask')
@@ -95,7 +95,7 @@ def UnsupSimCSEModel(pretrained_model_dir, strategy='cls', lr=3e-5, **kwargs):
 
     # take CLS embedding as sentence embedding
     embedding = tf.keras.layers.Lambda(lambda x: x[:, 0], name='embedding')(sequence_outputs)
-    model = UnsupSimCSE(inputs=[input_ids, segment_ids, attn_mask], outputs=embedding)
+    model = UnsupSimCSEModel(inputs=[input_ids, segment_ids, attn_mask], outputs=embedding)
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=lr),
     )

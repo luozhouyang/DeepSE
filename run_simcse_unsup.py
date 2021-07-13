@@ -5,7 +5,7 @@ import tensorflow as tf
 from tokenizers import BertWordPieceTokenizer
 
 from deepse.simcse_dataset import UnsupSimCSEDataset
-from deepse.simcse_unsup import UnsupSimCSEModel
+from deepse.simcse_unsup import UnsupSimCSE
 
 CONFIG = {
     'pretrained_model_dir': os.environ['PRETRAINED_MODEL_PATH'],
@@ -30,7 +30,7 @@ CONFIG.update({
     'valid_bucket_boundaries': [50, 100, 150, 200],  # 按照文本长度分桶，提升计算效率
 })
 
-model = UnsupSimCSEModel(
+model = UnsupSimCSE(
     pretrained_model_dir=CONFIG['pretrained_model_dir'],
     strategy=CONFIG['pooling_strategy'],
     lr=CONFIG['lr'],
