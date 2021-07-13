@@ -36,8 +36,8 @@ class UnsupSimCSE(tf.keras.Model):
         x, y, sample_weight = _unpack_data(data)
         with tf.GradientTape() as tape:
             input_ids, segment_ids, attn_mask = x['input_ids'], x['segment_ids'], x['attention_mask']
-            a_embedding = self(inputs=(input_ids, segment_ids, attn_mask), training=True)
-            b_embedding = self(inputs=(input_ids, segment_ids, attn_mask), training=True)
+            a_embedding = self(input_ids, segment_ids, attn_mask, training=True)
+            b_embedding = self(input_ids, segment_ids, attn_mask, training=True)
             # b_embedding = a_embedding
             embeddings = tf.stack([a_embedding, b_embedding], axis=1)
             batch_size = tf.shape(embeddings)[0]
