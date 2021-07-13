@@ -36,8 +36,8 @@ class UnsupSimCSE(tf.keras.Model):
         x, y, sample_weight = _unpack_data(data)
         with tf.GradientTape() as tape:
             input_ids, segment_ids, attn_mask = x['input_ids'], x['segment_ids'], x['attention_mask']
-            a_embedding = self(input_ids, segment_ids, attn_mask, training=True)
-            b_embedding = self(input_ids, segment_ids, attn_mask, training=True)
+            a_embedding = self(inputs=[input_ids, input_ids, attn_mask], training=True)
+            b_embedding = self(inputs=[input_ids, segment_ids, attn_mask], training=True)
             # b_embedding = a_embedding
             embeddings = tf.stack([a_embedding, b_embedding], axis=1)
             batch_size = tf.shape(embeddings)[0]
@@ -63,8 +63,8 @@ class UnsupSimCSE(tf.keras.Model):
     def test_step(self, data):
         x, y, sample_weight = _unpack_data(data)
         input_ids, segment_ids, attn_mask = x['input_ids'], x['segment_ids'], x['attention_mask']
-        a_embedding = self(inputs=(input_ids, segment_ids, attn_mask), training=False)
-        b_embedding = self(inputs=(input_ids, segment_ids, attn_mask), training=False)
+        a_embedding = self(inputs=[input_ids, segment_ids, attn_mask], training=False)
+        b_embedding = self(inputs=[input_ids, segment_ids, attn_mask], training=False)
         embeddings = tf.stack([a_embedding, b_embedding], axis=1)
         batch_size = tf.shape(embeddings)[0]
         y_pred = tf.reshape(embeddings, shape=(2 * batch_size, -1))
@@ -90,9 +90,8 @@ def UnsupSimCSEModel(pretrained_model_dir, strategy='cls', lr=3e-5, **kwargs):
     bert = Bert.from_pretrained(
         pretrained_model_dir,
         return_states=True,
-        return_attention_weights=False,
-        verbose=False)
-    sequence_outputs, pooled_outputs, hidden_states = bert(inputs=(input_ids, segment_ids, attn_mask))
+        return_attention_weights=False)
+    sequence_outputs, pooled_outputs, hidden_states = bert(inputs=[input_ids, segment_ids, attn_mask])
 
     # take CLS embedding as sentence embedding
     embedding = tf.keras.layers.Lambda(lambda x: x[:, 0], name='embedding')(sequence_outputs)
