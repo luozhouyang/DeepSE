@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="deepse",
-    version="0.0.1",
+    version="0.0.2",
     description="**DeepSE**: **Sentence Embeddings** based on Deep Nerual Networks, designed for **PRODUCTION** enviroment!",
     long_description=long_description,
     long_description_content_type="text/markdown",
