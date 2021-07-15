@@ -3,6 +3,14 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+requirements = []
+with open('requirements.txt', mode='rt', encoding='utf-8') as fin:
+    for line in fin:
+        line = line.strip()
+        if not line:
+            continue
+        requirements.append(line)
+
 setuptools.setup(
     name="deepse",
     version="0.0.2",
@@ -14,13 +22,9 @@ setuptools.setup(
     author_email="zhouyang.luo@gmail.com",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=[
-        "transformers-keras>=0.2.6",
-        "tokenizers"
-    ],
+    install_requires=requirements,
     extras_require={
-        "tf": ["tensorflow>=2.0.1"],
-        "tf-gpu": ["tensorflow-gpu>=2.0.1"],
+
     },
     license="Apache Software License",
     classifiers=(
