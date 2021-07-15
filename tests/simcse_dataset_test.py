@@ -1,7 +1,8 @@
 import os
 import unittest
 
-from deepse.simcse_dataset import SimCSEDataset, UnsupSimCSEDataset
+from deepse.simcse_dataset import (HardNegativeSimCSEDataset,
+                                   SupervisedSimCSEDataset, UnsupSimCSEDataset)
 from tokenizers import BertWordPieceTokenizer
 
 PATH = os.environ['PRETRAINED_MODEL_PATH']
@@ -14,19 +15,31 @@ class SimCSEDatasetTest(unittest.TestCase):
             os.path.join(PATH, 'chinese_roberta_wwm_ext_L-12_H-768_A-12', 'vocab.txt'))
         dataset = UnsupSimCSEDataset(tokenizer)
         train_dataset = dataset(
-            input_files=['data/small.txt'],
+            input_files=['data/simcse_unsup.jsonl'],
             batch_size=4,
             bucket_boundaries=[20],
             buffer_size=10,
         )
         print(next(iter(train_dataset)))
 
-    def test_simcse_dataset(self):
+    def test_supervised_simcse_dataset(self):
         tokenizer = BertWordPieceTokenizer.from_file(
             os.path.join(PATH, 'chinese_roberta_wwm_ext_L-12_H-768_A-12', 'vocab.txt'))
-        dataset = SimCSEDataset(tokenizer)
+        dataset = SupervisedSimCSEDataset(tokenizer)
         train_dataset = dataset(
-            input_files=['data/simcse.txt'],
+            input_files=['data/simcse_supervised.jsonl'],
+            batch_size=4,
+            bucket_boundaries=[5],
+            buffer_size=10,
+        )
+        print(next(iter(train_dataset)))
+
+    def test_hard_negative_simcse_dataset(self):
+        tokenizer = BertWordPieceTokenizer.from_file(
+            os.path.join(PATH, 'chinese_roberta_wwm_ext_L-12_H-768_A-12', 'vocab.txt'))
+        dataset = HardNegativeSimCSEDataset(tokenizer)
+        train_dataset = dataset(
+            input_files=['data/simcse_hardnegative.jsonl'],
             batch_size=4,
             bucket_boundaries=[5],
             buffer_size=10,
