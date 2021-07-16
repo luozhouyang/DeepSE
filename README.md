@@ -66,7 +66,8 @@ TODO: 补充文档
 
 ```bash
 export PRETRAINED_MODEL_PATH=/path/to/your/pretrained/bert/dir 
-python run_simcse.py
+nohup python run_simcse.py >> log/run_simcse.log 2>&1 &
+tail -f log/run_simcse.log
 ```
 
 > 参数可以到`run_simcse.py`直接修改。
