@@ -57,7 +57,7 @@ class UnsupSimCSEDataset:
             padding_values=(pad, pad, pad),
         )).prefetch(tf.data.AUTOTUNE)
         dataset = dataset.map(
-            lambda x, y, z: ({'input_ids': x, 'segment_ids': y, 'attention_mask': z}, None),
+            lambda x, y, z: ({'input_ids': x, 'segment_ids': y, 'attention_mask': z}),
             num_parallel_calls=tf.data.AUTOTUNE
         ).prefetch(tf.data.AUTOTUNE)
         if auto_shard_policy is not None:
@@ -157,7 +157,7 @@ class SupervisedSimCSEDataset:
                     'pos_input_ids': e,
                     'pos_segment_ids': f,
                     'pos_attention_mask': g
-                }, None),
+                }),
             num_parallel_calls=tf.data.AUTOTUNE
         ).prefetch(tf.data.AUTOTUNE)
         if auto_shard_policy is not None:
@@ -281,7 +281,7 @@ class HardNegativeSimCSEDataset:
                     'neg_input_ids': h,
                     'neg_segment_ids': i,
                     'neg_attention_mask': j,
-                }, None),
+                }),
             num_parallel_calls=tf.data.AUTOTUNE
         ).prefetch(tf.data.AUTOTUNE)
         if auto_shard_policy is not None:

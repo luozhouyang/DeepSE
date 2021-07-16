@@ -8,10 +8,9 @@ class AbstractSimCSEModel(tf.keras.Model):
         raise NotImplementedError()
 
     def train_step(self, data):
-        x, _ = data
+        x = data
         batch_size = tf.shape(x['input_ids'])[0]
         y_true = tf.range(0, batch_size)
-        print('y_true: ', y_true)
         with tf.GradientTape() as tape:
             y_pred, loss = self.forward(x, y_true, training=True)
 
@@ -29,7 +28,7 @@ class AbstractSimCSEModel(tf.keras.Model):
         return results
 
     def test_step(self, data):
-        x, _ = data
+        x = data
         batch_size = tf.shape(x['input_ids'])[0]
         y_true = tf.range(0, batch_size)
         y_pred, loss = self.forward(x, y_true, training=False)
