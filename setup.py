@@ -13,7 +13,7 @@ with open('requirements.txt', mode='rt', encoding='utf-8') as fin:
 
 setuptools.setup(
     name="deepse",
-    version="0.0.3",
+    version="0.0.4",
     description="**DeepSE**: **Sentence Embeddings** based on Deep Nerual Networks, designed for **PRODUCTION** enviroment!",
     long_description=long_description,
     long_description_content_type="text/markdown",
