@@ -15,27 +15,29 @@ CONFIG = {
     'lr': 3e-5,
     'pooling_strategy': 'cls',  # ['cls', 'pooler']
     'mode': 'unsup',  # ['unsup', 'sup', 'hardneg']
-    'max_sequence_length': 256
+    'max_sequence_length': 100
 }
 
 CONFIG.update({
     'train_input_files': [
-        'data/simcse.txt',
+        'data/simcse_unsup.jsonl',
     ],
-    'train_batch_size': 32,
+    'train_batch_size': 80,
     'train_buffer_size': 1000000,  # 一般不小于训练样本总数
-    'train_bucket_boundaries': [50, 100, 150, 200],  # 按照文本长度分桶，提升计算效率
+    'train_bucket_boundaries': [25, 50, 75],  # 按照文本长度分桶，提升计算效率
     'valid_input_files': [
-        'data/simcse.txt',
+        'data/simcse_unsup.jsonl',
     ],
-    'valid_batch_size': 32,
+    'valid_batch_size': 64,
     'valid_buffer_size': 2000,  # 一般不小于验证样本总数
-    'valid_bucket_boundaries': [50, 100, 150, 200],  # 按照文本长度分桶，提升计算效率
+    'valid_bucket_boundaries': [25, 50, 75],  # 按照文本长度分桶，提升计算效率
 })
 
 model = SimCSE(
     pretrained_model_dir=CONFIG['pretrained_model_dir'],
     lr=CONFIG['lr'],
+    mode=CONFIG['mode'],
+    pooling_strategy=CONFIG['pooling_strategy']
 )
 
 tokenizer = BertWordPieceTokenizer.from_file(os.path.join(CONFIG['pretrained_model_dir'], 'vocab.txt'))
